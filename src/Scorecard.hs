@@ -79,4 +79,3 @@ scoreGame (Scorecard fs) | length fs<10 = Nothing
                    | otherwise = None
         scoreFrame (s, c) (Regular b1 b2) = (s + b1 + b2 + carry c b1 b2, newC c b1 b2)
         scoreFrame (s, c) (Final b1 b2 b3) = (s + b1 + b2 + b3 + carry c b1 b2, None)
-                                        
