@@ -8,12 +8,15 @@ makeSC :: [Frame] -> Either String Scorecard
 makeSC fs = foldM score empty fs
 
 test :: String -> Maybe Integer -> [Frame] -> IO ()
-test desc expected game = do
-    either (\err -> putStrLn $ "FAIL: Couldn't construct scorecard: " ++ err)
-           (\s -> let total = scoreGame s in
-                  if total == expected
-                    then putStrLn $ "SUCCESS: " ++ desc ++ " " ++ show s ++ " has a score of " ++ show expected
-                    else putStrLn $ "FAILED: " ++ desc ++ " " ++ show s ++ " has a score of " ++ show total ++ ". Was expecting " ++ show expected) $ makeSC game
+test desc expected game =
+    either fail pass $ makeSC game
+        where
+            fail err = putStrLn $ "FAIL: Couldn't construct scorecard: " ++ err
+            pass s = let total = scoreGame s
+                         showScore = maybe "Incomplete" show
+                     in if total == expected
+                        then putStrLn $ "SUCCESS: " ++ desc ++ " " ++ show s ++ " has a score of " ++ showScore expected
+                        else putStrLn $ "FAILED: " ++ desc ++ " " ++ show s ++ " has a score of " ++ showScore total ++ ". Was expecting " ++ showScore expected
            
 main :: IO ()
 main = do
@@ -33,4 +36,6 @@ main = do
     test "Check invalid frame" Nothing [Regular 5 6]
     test "Check negative" Nothing [Regular (-5) 15]
     test "Check out of place final frame" Nothing [Final 5 5 5]
-    test "Check too many frames" Nothing $ replicate 11 (Regular 5 5)
+    test "Check too many frames" Nothing $ replicate 11 (Regular 1 2)
+    test "Check invalid final frame (Spare)" Nothing $ replicate 10 (Regular 5 5)
+    test "Check invalid final frame (Strike)" Nothing $ replicate 10 (Regular 10 0)

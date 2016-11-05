@@ -49,7 +49,9 @@ score (Scorecard fs) f@(Regular a b) = do
     a' <- checkBall a
     b' <- checkBall b
     when (a' + b' > 10) $ throwError "Frame can't add to greater than 10"
-    when (length fs>=10) $ throwError "Scorecard is complete"
+    let l = length fs
+    when (l>=10) $ throwError "Scorecard is complete"
+    when (l==9 && (a'==10 || a'+b'==10)) $ throwError "Regular frame cannot be used when a strike or spare is scored in final frame"
     return $ Scorecard (fs ++ [f])
 score (Scorecard fs) f@(Final a b c) = do
     a' <- checkBall a
