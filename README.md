@@ -1,6 +1,6 @@
 ## Bowling
 
-API for creating and evaluting ten-pin bopwling scorecards (see [Ten-Pin Bowling Scoring](https://en.wikipedia.org/wiki/Ten-pin_bowling)).
+API for creating and evaluting ten-pin bowling scorecards (see [Ten-Pin Bowling Scoring](https://en.wikipedia.org/wiki/Ten-pin_bowling)).
 
 # Running
 Everything is written in Haskell. The API is all contained in `src/Scorecard.hs`. A simple test driver is in `src/Main.hs`. With [`stack`](http://www.haskellstack.org), running should be just be a matter of `stack build && stack exec Bowling` from the project directory.
